@@ -33,6 +33,9 @@ Manage employee database through this command-line application
   Answer the prompts that appear in the command line. You will be asked to explore employee roster, explore departments, change roles and much more. From there, you may choose to view an exployees salary or their role within the team.
   If there is an error in running this program, an error message will apppear in the console.
   
+
+  ![image](exployee-database.png)
+  
   ## Video
   
   Watch the demo video
