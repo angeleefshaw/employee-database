@@ -105,11 +105,6 @@ function viewDepartment() {
   startApp();
 }
 
-function viewManagers() {
-    var query = "SELECT * FROM songs"
-    //connection.query...
-}
-
 function viewRole() {
     var query = "SELECT * FROM roles"
     connection.query(query, function(err, res) {
@@ -118,10 +113,33 @@ function viewRole() {
         }
     })
     startApp();
-}
+};
 
 function addEmployee() {
-    var query = "SELECT * FROM songs"
+    inquirer.prompt([{
+        name: 'first_name',
+        type: 'input',
+        message: 'What is the first name of the Employee?',
+    }, {
+        name: 'last_name',
+        type:'input',
+        message:'What is the last name of the Employee?',
+    }, {
+        name: 'title',
+        type: 'input',
+        message: 'What is the title of the Employee?',
+    }, {
+        name: 'role_id',
+        type: 'input',
+        message: 'What is the role ID of the Employee?',
+    }, {
+        name: 'manager_id',
+        type: 'input',
+        message: 'What is the manager ID of the Employee?',
+    }]).then(function(answers) {
+        console.log(answers)
+    })
+    var query = "INSERT INTO employee (id INT PRIMARY KEY AUTO_INCREMENT, first_name VARCHAR(30) NOT NULL, last_name VARCHAR(30) NOT NULL, role_id INT, manager_id INT NULL, PRIMARY KEY (id)"
     //connection.query...
 }
 
