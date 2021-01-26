@@ -40,11 +40,7 @@ Manage employee database through this command-line application
   
   Watch the demo video
   
-  [EMPLOYEE DATABASE]( "DATABASE" https://www.youtube.com/watch?v=hyltPxZ_oCA&feature=youtu.be)
-
-  ![employee-database-mysql](.jpg)
-
-
+  [EMPLOYEE DATABASE](https://www.youtube.com/watch?v=hyltPxZ_oCA&feature=youtu.be "DATABASE")
   
   
   ## License
