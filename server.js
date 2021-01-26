@@ -1,7 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-const { choices } = require('yargs');
-const { allowedNodeEnvironmentFlags } = require('process');
+const cTable = require('console.table')
 
 // Connect to the ice_creamDB database using a localhost connection
 const connection = mysql.createConnection({
@@ -14,23 +13,29 @@ const connection = mysql.createConnection({
   user: 'root',
 
   // Your MySQL password
-  password: 'vb677797vbzxAs222888999',
+  password: 'vbsixseven97vbzxAs!',
 
   // Name of database
   database: 'employee_DB'
 });
 
+function asyncConnectionQuery(queryStr, argValues) {
+    return new Promise((resolve, reject) => {
+      connection.query(queryStr, argValues, (err, result) => {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(result);
+        }
+      });
+    });
+  }
+
 connection.connect((err) => {
   if (err) throw err;
   startApp();
-  //console.log('connected as id ' + connection.threadId);
-  //connection.end();
 });
 
-// connection.query("SELECT * FROM songs", function(err, res) {
-//     if (err) throw err;
-//     console.log(res);
-// })
 
 function startApp() {
     inquirer.prompt({
@@ -40,14 +45,12 @@ function startApp() {
         choices: [
             {name:'View all Employees', value: 0},
             {name:'View all Departments', value: 1},
-            {name:'View all Employees by Manager', value: 2},
-            {name:'View all Roles', value: 3},
-            {name:'Add Employee', value:4},
-            {name:'Delete Employee', value: 5},
-            {name:'Add Role', value: 6},
-            {name:'Update Employee Role', value: 7},
-            {name:'Add Department', value: 8},
-            {name:'Exit Program' , vlaue:9},
+            {name:'View all Roles', value: 2},
+            {name:'Add Employee', value:3},
+            {name:'Update Employee Role', value: 4},
+            {name:'Add Role', value: 5},
+            {name:'Add Department', value: 6},
+            {name:'Exit Program' , value:7},
         ]
     }).then(function(answers) {
         if (answers.select === 0) {
@@ -57,29 +60,24 @@ function startApp() {
             viewDepartment();
         }
         else if (answers.select === 2) {
-            viewManagers();
-        } 
-        else if (answers.select === 3) {
             viewRole();
         } 
-        else if (answers.select === 4) {
+        else if (answers.select === 3) {
             addEmployee();
         }
-        else if (answers.select === 5) {
-            deleteEmployee();
-        }
-        else if (answers.select === 6) {
-            addRole();
-        }
-        else if (answers.select === 7) {
+        else if (answers.select === 4) {
             updateRole();
         }
-        else if (answers.select === 8) {
+        else if (answers.select === 5) {
+            addRole();
+        }
+        else if (answers.select === 6) {
             addDepartment();
         } 
-        else if (answers.select === 9) {
-            //connection.end()
-            //console.log('Goodbye!')
+        else if (answers.select === 7) {
+            console.log('Goodbye')
+           process.exit()
+           
         } 
     })
 };
@@ -88,7 +86,8 @@ function viewEmployees() {
     var query = "SELECT * FROM employee";
     connection.query(query, function(err, res) {
         for (var i=0; i< res.length; i++) {
-            console.log(res[i]);
+            console.table(res[i]);
+            console.log('Press Down key to continue');
         }
     });
 
@@ -99,17 +98,19 @@ function viewDepartment() {
     var query = "SELECT * FROM department";
     connection.query(query, function(err, res) {
         for (var i=0; i< res.length; i++) {
-            console.log(res[i]);
+            console.table(res[i]);
+            console.log('Press Down key to continue');
         }
   })
-  startApp();
+    startApp();
 }
 
 function viewRole() {
-    var query = "SELECT * FROM roles"
+    var query = "SELECT * FROM role"
     connection.query(query, function(err, res) {
         for (var i=0; i< res.length; i++) {
-            console.log(res[i]);
+            console.table(res[i]);
+            console.log('Press Down key to continue');
         }
     })
     startApp();
@@ -132,33 +133,121 @@ function addEmployee() {
         name: 'role_id',
         type: 'input',
         message: 'What is the role ID of the Employee?',
-    }, {
-        name: 'manager_id',
-        type: 'input',
-        message: 'What is the manager ID of the Employee?',
     }]).then(function(answers) {
-        console.log(answers)
-    })
-    var query = "INSERT INTO employee (id INT PRIMARY KEY AUTO_INCREMENT, first_name VARCHAR(30) NOT NULL, last_name VARCHAR(30) NOT NULL, role_id INT, manager_id INT NULL, PRIMARY KEY (id)"
-    //connection.query...
-}
-
-function deleteEmployee() {
-    var query = "SELECT * FROM songs"
-    //connection.query...
+        asyncConnectionQuery('INSERT INTO employee SET ?' , {
+            first_name: answers.first_name,
+            last_name: answers.last_name,
+            title: answers.title,
+            role_id: answers.role_id
+        }).then( 
+            inquirer.prompt([{
+                name:'finished',
+                type:'list',
+                message: 'Employee has been added to the database. Would you like to exit the program?',
+                choices:[
+                    {name:'Yes, Exit Program' , value: 0},
+                    {name: 'No, return to main prompt',  value:1},
+                ]
+            }]).then(function(answers) {
+                if (answers.select = 0) {
+                    console.log('Goodbye')
+                    process.exit()
+                } else {
+                startApp()
+                }
+            })
+    )})
 }
 
 function addRole() {
-    var query = "SELECT * FROM songs"
-    //connection.query...
+    inquirer.prompt([{
+        name: 'add_role',
+        type: 'input',
+        message: 'What role would you like to add?',
+    }, {
+        name: 'role_salary',
+        type: 'input',
+        message: 'What is the expected salary for this Role?',
+    }, {
+        name: 'role_id',
+        type: 'input',
+        message: 'What is the role ID? If unknown, enter 1',
+    }]).then(function(answers) {
+        asyncConnectionQuery('INSERT INTO role SET ?' , {
+            id: answers.role_id,
+            title: answers.add_role,
+            salary: answers.role_salary,
+        }).then( 
+            inquirer.prompt([{
+                name:'finished',
+                type:'list',
+                message: 'Role has been added to the database. Would you like to exit the program?',
+                choices:[
+                    {name:'Yes, Exit Program' , value: 0},
+                    {name: 'No, return to main prompt',  value:1},
+                ]
+            }]).then(function(answers) {
+                if (answers.select = 0) {
+                    console.log('Goodbye')
+                    process.exit()
+                } else {
+                startApp()
+                }
+            })
+    )})
 }
 
 function updateRole() {
-    var query = "SELECT * FROM songs"
-    //connection.query...
+    inquirer.prompt([{
+        name: 'employee_name',
+        type: 'input',
+        message: 'What is the name of the Employee whos role you would like to update?',
+    }, {
+        name: 'name_of_role',
+        type: 'list',
+        message: 'What role would you like to assign this employee?',
+        choices: [
+            {name: 'Project Manager', value: 0},
+            {name: 'Intern' , value: 1},
+            {name: 'Software Engineer', value: 2},
+            {name: 'HR Manager', value: 3},
+            {name: 'HR Compliance', value: 4},
+            {name: 'SEO Specialist', value: 5},
+            {name: 'Brand Manager', value: 6},
+            {name: 'Marketing Analyst', value: 7},
+            {name: 'Customer Service Rep', value: 8},
+            {name: 'Customer Service Manager', value: 9},
+        ]
+    }]).then(function(answers) {
+        console.log(answers)
+    })
+    startApp();
 }
 
 function addDepartment() {
-    var query = "SELECT * FROM songs"
-    //connection.query...
+    inquirer.prompt([{
+        name: 'department',
+        type: 'input',
+        message: 'What is the name of the department you would like to add?',
+    }]).then(function(answers) {
+        asyncConnectionQuery('INSERT INTO department SET ?' , {
+           name: answers.department
+        }).then( 
+            inquirer.prompt([{
+                name:'finished',
+                type:'list',
+                message: 'Department has been added to the database. Would you like to exit the program?',
+                choices:[
+                    {name:'Yes, Exit Program' , value: 0},
+                    {name: 'No, return to main prompt',  value:1},
+                ]
+            }]).then(function(answers) {
+                if (answers.select = 0) {
+                    console.log('Goodbye')
+                    process.exit()
+                } else {
+                startApp()
+                }
+            })
+    )})
 }
