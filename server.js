@@ -1,23 +1,8 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table')
+var connection = require ('./connection')
 
-// Connect to the ice_creamDB database using a localhost connection
-const connection = mysql.createConnection({
-  host: 'localhost',
-
-  // Your port, if not 3306
-  port: 3306,
-
-  // Your MySQL username
-  user: 'root',
-
-  // Your MySQL password
-  password: 'vbsixseven97vbzxAs!',
-
-  // Name of database
-  database: 'employee_DB'
-});
 
 function asyncConnectionQuery(queryStr, argValues) {
     return new Promise((resolve, reject) => {
