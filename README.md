@@ -23,7 +23,7 @@ Manage employee database through this command-line application
   
   > npm install
   
-  to install dependencies before running the application your command line.
+  to install dependencies before running the application on the command line.
   
   ## Usage
   Invoke the applicaton with the command 
