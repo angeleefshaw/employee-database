@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+require('dotenv').config();
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -10,11 +11,10 @@ const connection = mysql.createConnection({
     user: 'root',
   
     // Your MySQL password
-    password: '',
+    password: process.env.password,
   
     // Name of database
     database: 'employee_DB'
   });
 
 module.exports = connection;
-
