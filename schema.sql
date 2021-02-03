@@ -24,13 +24,13 @@ CREATE TABLE employee (
   manager_id INT NOT NULL,
 );
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Angela', 'Stone', 4, 17);
+INSERT INTO employee (first_name, last_name, title, role_id, manager_id)
+VALUES ('Angela', 'Stone','Software Engineer', 4, 17);
 
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Kim', 'Lee', 6, 19);
+INSERT INTO employee (first_name, last_name, title, role_id, manager_id)
+VALUES ('Kim', 'Lee','Project Manager', 6, 19);
 
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Antonio', 'Millet', 19, 18);
+INSERT INTO employee (first_name, last_name, title, role_id, manager_id)
+VALUES ('Antonio', 'Millet', 'Intern', 19, 18);
