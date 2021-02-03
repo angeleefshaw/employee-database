@@ -5,16 +5,14 @@ USE employee_DB;
 
 CREATE TABLE department (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(30) NOT NULL,
-  PRIMARY KEY (id)
+  name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  title VARCHAR(30) NULL,
-  salary DECIMAL(10,2) NULL,
-  department_id INT,
-  PRIMARY KEY (id)
+  title VARCHAR(30) NOT NULL,
+  salary DECIMAL(10,2)NOT  NULL,
+  department_id INT
 );
 
 CREATE TABLE employee (
@@ -23,18 +21,16 @@ CREATE TABLE employee (
   last_name VARCHAR(30) NOT NULL,
   title VARCHAR(50) NOT NULL, 
   role_id INT,
-  manager_id INT NULL,
-  PRIMARY KEY (id)
-)
+  manager_id INT NOT NULL,
+);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Angela', 'Stone', 4, 17)
-)
+VALUES ('Angela', 'Stone', 4, 17);
+
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Kim', 'Lee', 6, 19)
-)
+VALUES ('Kim', 'Lee', 6, 19);
+
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Antonio', 'Millet', 19, 18)
-)
+VALUES ('Antonio', 'Millet', 19, 18);
